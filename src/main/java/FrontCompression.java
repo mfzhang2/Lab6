@@ -42,10 +42,30 @@ public class FrontCompression {
         }
 
         /*
-         * Complete this function.
+         * Split string into array.
          */
+        String[] words = corpus.split("\n");
+        String[] compressed = new String[words.length];
 
-        return "";
+        /*
+         * Compress the words and put them into the array: compressed.
+         * Also add the integer number
+         */
+        compressed[0] = words[0];
+        for (int i = 1; i < words.length; i++) {
+            int length = FrontCompression.longestPrefix(words[i - 1], words[i]);
+            compressed[i] = length + "" + words[i].substring(length, words[i].length());
+        }
+
+        /*
+         * Convert the array back into a string.
+         */
+        String r = "";
+        for (String com : compressed) {
+            r += com + "\n";
+        }
+        r = r.trim();
+        return r;
     }
 
     /**
@@ -65,10 +85,32 @@ public class FrontCompression {
         }
 
         /*
-         * Complete this function.
+         * Split string into array;
          */
+        String[] words = corpus.split("\n");
+        String[] decompress = new String[words.length];
 
-        return "";
+        /*
+         * Add prefix onto word.
+         */
+        decompress[0] = words[0];
+        for (int i = 1; i < words.length; i++) {
+            String number = words[i].substring(0, 1);
+            int length = Integer.parseInt(number);
+            String decompressedWord = decompress[i - 1].substring(0,  length)
+                    + words[i].substring(1, words[i].length());
+            decompress[i] = decompressedWord;
+        }
+
+        /*
+         * Convert the array back into a string.
+         */
+        String r = "";
+        for (String com : decompress) {
+            r += com + "\n";
+        }
+        r = r.trim();
+        return r;
     }
 
     /**
@@ -80,9 +122,37 @@ public class FrontCompression {
      */
     private static int longestPrefix(final String firstString, final String secondString) {
         /*
-         * Complete this function.
+         * Test if the strings are empty.
          */
-        return 0;
+        if (firstString.length() == 0 || secondString.length() == 0) {
+            return 0;
+        }
+
+        /*
+         * Check which string is shortest and longest.
+         */
+        String longestString = "";
+        String shortestString = "";
+        if (firstString.length() > secondString.length()) {
+            longestString = firstString;
+            shortestString = secondString;
+        } else {
+            longestString = secondString;
+            shortestString = firstString;
+        }
+
+        /*
+         * Set count equal to the length of the common prefix between the two strings.
+         */
+        int count = 0;
+        for (int i = 0; i < shortestString.length(); i++) {
+            if (shortestString.charAt(i) == longestString.charAt(i)) {
+                count += 1;
+            } else {
+                break;
+            }
+        }
+        return count;
     }
 
     /**
